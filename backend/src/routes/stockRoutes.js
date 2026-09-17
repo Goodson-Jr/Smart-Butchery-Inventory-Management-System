@@ -1,10 +1,10 @@
 const express = require('express');
 const pool = require('../config/db');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/stock-batches', requireAuth, async (req, res) => {
+router.post('/stock-batches', requireAuth, requireRole('admin'), async (req, res) => {
   const { product_id, quantity_kg } = req.body;
 
   if (!product_id || !(quantity_kg > 0)) {

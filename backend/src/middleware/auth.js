@@ -16,4 +16,13 @@ function requireAuth(req, res, next) {
   }
 }
 
-module.exports = { requireAuth };
+function requireRole(role) {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({ error: `Only ${role} accounts can do this` });
+    }
+    next();
+  };
+}
+
+module.exports = { requireAuth, requireRole };
