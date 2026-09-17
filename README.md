@@ -1,4 +1,4 @@
-# Smart Inventory Butchery Management System (SBIMS)
+# Smart Butchery Inventory Management System (SBIMS)
 
 A weight-based inventory management system for butcheries, with an Android cashier app, a web management dashboard, and a shared backend/database.
 
