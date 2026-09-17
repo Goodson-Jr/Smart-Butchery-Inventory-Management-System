@@ -23,6 +23,7 @@
         <activity android:name=".ui.SaleEntryActivity" android:exported="false" />
         <activity android:name=".ui.AddStockActivity" android:exported="false" />
         <activity android:name=".ui.StockListActivity" android:exported="false" />
+        <activity android:name=".ui.WastageActivity" android:exported="false" />
 
     </application>
 

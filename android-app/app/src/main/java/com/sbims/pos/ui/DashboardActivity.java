@@ -30,11 +30,13 @@ public class DashboardActivity extends AppCompatActivity {
         View saleButton = findViewById(R.id.saleButton);
         View addStockButton = findViewById(R.id.addStockButton);
         View viewStockButton = findViewById(R.id.viewStockButton);
+        View wastageButton = findViewById(R.id.wastageButton);
         View logoutButton = findViewById(R.id.logoutButton);
 
         saleButton.setOnClickListener(v -> startActivity(new Intent(this, SaleEntryActivity.class)));
         addStockButton.setOnClickListener(v -> startActivity(new Intent(this, AddStockActivity.class)));
         viewStockButton.setOnClickListener(v -> startActivity(new Intent(this, StockListActivity.class)));
+        wastageButton.setOnClickListener(v -> startActivity(new Intent(this, WastageActivity.class)));
         logoutButton.setOnClickListener(v -> logout());
     }
 

@@ -19,6 +19,8 @@
     <string name="action_add_stock_subtitle">Log a fresh delivery</string>
     <string name="action_view_stock">View Stock</string>
     <string name="action_view_stock_subtitle">See what\'s on the shelf</string>
+    <string name="action_wastage">Record Wastage</string>
+    <string name="action_wastage_subtitle">Log spoiled or expired stock</string>
     <string name="label_today_summary">Today: %1$s kg sold · K%2$s revenue</string>
 
     <string name="sale_title">Record Sale</string>
@@ -38,4 +40,9 @@
     <string name="label_low_stock">Low stock</string>
     <string name="label_kg">%1$s kg</string>
     <string name="label_price_per_kg">K%1$s / kg</string>
+
+    <string name="wastage_title">Record Wastage</string>
+    <string name="wastage_subtitle">Tap a cut, then log the spoiled weight</string>
+    <string name="hint_wastage_reason">Reason (e.g. expired, spoiled)</string>
+    <string name="action_save_wastage">Log Wastage</string>
 </resources>

@@ -24,6 +24,10 @@
         <item name="backgroundTint">@color/dark</item>
     </style>
 
+    <style name="Widget.SBIMS.Button.Danger">
+        <item name="backgroundTint">@color/danger</item>
+    </style>
+
     <style name="Widget.SBIMS.Button.Soft" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/yellow</item>
         <item name="android:textColor">@color/brand_deep</item>

@@ -7,6 +7,7 @@ import com.sbims.pos.model.Product;
 import com.sbims.pos.model.SaleRequest;
 import com.sbims.pos.model.SaleResponse;
 import com.sbims.pos.model.StockBatchRequest;
+import com.sbims.pos.model.WastageRequest;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -34,4 +35,7 @@ public interface ApiService {
 
     @GET("api/sales/today")
     Call<DailySummary> getTodaySummary();
+
+    @POST("api/wastage")
+    Call<Void> recordWastage(@Body WastageRequest request);
 }
