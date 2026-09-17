@@ -2,24 +2,44 @@
 
 **Owner:** Josiphiah
 
-The web application used by management. Talks to `backend/` over HTTP.
+The web application used by management. Standalone HTML/CSS/JS calling
+`backend/`'s REST API directly (same origin-less setup as the Android app —
+CORS is open on the backend). Mirrors the Android app's screens and visual
+theme so cashiers/management see the same system either way.
 
-## Screens
+## Status
 
-- **Dashboard** — total stock by meat type, today's sales (kg and revenue),
-  low-stock alerts.
-- **Meat cuts & categories** — manage meat types (beef, chicken, pork) and their
-  cuts (beef → steak / ribs / mince; chicken → wings / thighs / breast), with
-  price per kg.
-- **Stock** — record deliveries (stock in), view current stock, adjust.
-- **Wastage / spoilage** — record spoiled or expired meat; see wastage over time.
-- **Reports** — daily / weekly sales, profit estimation, stock-usage trends.
-- **Users** — manage cashier / attendant and admin accounts.
+Built and running against the current backend:
 
-## Approach
+- `login.html` — sign in, same butchery hero-photo treatment as the Android app
+- `dashboard.html` — today's kg sold / revenue tiles, low-stock browser
+  notification, action rows to the other screens
+- `sale.html` — product grid (barcode-scan-to-select via the browser camera,
+  `html5-qrcode`), cart, checkout, printable receipt (`window.print()`)
+- `add-stock.html` — product grid + quantity; admin-only per the backend's
+  current role rule
+- `stock.html` — stock list with category badges + low-stock flag
+- `wastage.html` — product grid + quantity + reason
 
-Standalone HTML/CSS/JS app calling the backend's REST API (see
-`docs/architecture.md`) — the backend is Node.js, not Java, so there's no
-server-side templating option.
+## Known gaps (backend-side, not this folder)
 
-See the `web` GitHub issues for the breakdown.
+- No `POST /api/sales/batch` yet — checkout submits each cart line as its
+  own `POST /api/sales` call in sequence (not atomic across the whole cart).
+  Swap `sale.js`'s checkout loop for one batch call once that endpoint exists.
+- `GET /api/products` doesn't return `category_name` or `barcode` yet, so
+  category badges fall back to a default color and barcode scan-to-select
+  never finds a match (scans fine, just nothing to match against).
+- Product/category **management UI** (add/edit a cut, categories) isn't
+  built here yet, even though the backend now has the write endpoints
+  (`POST/PUT /api/products`, `POST /api/categories`) — next thing to add.
+- Reports (daily/weekly sales, profit estimation, stock-usage trends) —
+  backend doesn't have these endpoints yet either.
+
+## To run
+
+Open `index.html` via a local server (e.g. VS Code's Live Server extension)
+— not `file://` directly, since ES module-free scripts are fine but the
+camera (`getUserMedia`) needs a proper origin. Needs `backend/` running on
+`localhost:3000`.
+
+See the `web` GitHub issues for the remaining breakdown.

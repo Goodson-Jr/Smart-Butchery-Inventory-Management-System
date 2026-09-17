@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log In · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="login-shell">
+
+    <div class="login-hero" style="background-image: url('img/meat-hero.png')">
+        <div class="login-hero-content">
+            <span class="badge">SB</span>
+            <span class="name">Smart Butchery IMS</span>
+        </div>
+    </div>
+
+    <div class="login-body">
+        <div class="login-card card">
+            <h1>Welcome back</h1>
+            <p class="sub">Sign in with your staff account to continue.</p>
+
+            <div id="errorNote" class="note err" hidden></div>
+
+            <form id="loginForm">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" autocomplete="username" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn dark" id="loginButton">Log In</button>
+            </form>
+
+            <p class="login-foot">SBIMS point of sale · authorised staff only</p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
