@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/products', requireAuth, async (req, res) => {
   const [rows] = await pool.query(
-    `SELECT p.id, p.category_id, c.name AS category_name, p.name, p.price_per_kg, p.stock_kg, p.low_stock_threshold_kg
+    `SELECT p.id, p.category_id, c.name AS category_name, p.name, p.price_per_kg, p.stock_kg, p.low_stock_threshold_kg, p.barcode
      FROM products p JOIN categories c ON c.id = p.category_id
      WHERE p.is_active = TRUE ORDER BY p.name`
   );

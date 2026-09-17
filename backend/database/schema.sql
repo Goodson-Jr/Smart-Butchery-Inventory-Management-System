@@ -21,6 +21,7 @@ CREATE TABLE products (
   price_per_kg DECIMAL(10, 2) NOT NULL,
   stock_kg DECIMAL(10, 3) NOT NULL DEFAULT 0,
   low_stock_threshold_kg DECIMAL(10, 3) NOT NULL DEFAULT 5,
+  barcode VARCHAR(50) UNIQUE NULL,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (category_id) REFERENCES categories(id)

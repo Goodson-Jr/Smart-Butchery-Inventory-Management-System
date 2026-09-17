@@ -4,6 +4,8 @@ import com.sbims.pos.model.DailySummary;
 import com.sbims.pos.model.LoginRequest;
 import com.sbims.pos.model.LoginResponse;
 import com.sbims.pos.model.Product;
+import com.sbims.pos.model.SaleBatchRequest;
+import com.sbims.pos.model.SaleBatchResponse;
 import com.sbims.pos.model.SaleRequest;
 import com.sbims.pos.model.SaleResponse;
 import com.sbims.pos.model.StockBatchRequest;
@@ -30,6 +32,9 @@ public interface ApiService {
     @POST("api/sales")
     Call<SaleResponse> recordSale(@Body SaleRequest request);
 
+    @POST("api/sales/batch")
+    Call<SaleBatchResponse> checkout(@Body SaleBatchRequest request);
+
     @POST("api/stock-batches")
     Call<Void> addStock(@Body StockBatchRequest request);
 
@@ -38,4 +43,7 @@ public interface ApiService {
 
     @POST("api/wastage")
     Call<Void> recordWastage(@Body WastageRequest request);
+
+    @GET("api/alerts/low-stock")
+    Call<List<Product>> getLowStockAlerts();
 }

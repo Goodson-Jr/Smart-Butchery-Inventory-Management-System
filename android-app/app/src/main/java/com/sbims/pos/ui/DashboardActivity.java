@@ -1,14 +1,22 @@
 package com.sbims.pos.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.sbims.pos.R;
 import com.sbims.pos.model.DailySummary;
+import com.sbims.pos.model.Product;
 import com.sbims.pos.network.ApiClient;
 import com.sbims.pos.network.SessionManager;
+import java.util.List;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,11 +26,15 @@ public class DashboardActivity extends AppCompatActivity {
 
     private TextView kgSoldText;
     private TextView revenueText;
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> checkLowStock());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        LowStockNotifier.ensureChannel(this);
 
         kgSoldText = findViewById(R.id.kgSoldText);
         revenueText = findViewById(R.id.revenueText);
@@ -52,6 +64,33 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadTodaySummary();
+        requestNotificationPermissionIfNeeded();
+    }
+
+    private void requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            checkLowStock();
+        }
+    }
+
+    private void checkLowStock() {
+        ApiClient.getService(this).getLowStockAlerts().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    LowStockNotifier.notifyIfLowStock(DashboardActivity.this, response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                // silent -- this is a background check, not a user-triggered action
+            }
+        });
     }
 
     private void loadTodaySummary() {

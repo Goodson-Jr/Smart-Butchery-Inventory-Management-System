@@ -30,6 +30,15 @@
             android:layout_marginTop="2dp" />
     </LinearLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/scanBarcodeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.SBIMS.Button.Dark"
+        android:text="@string/action_scan_barcode"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecyclerView"
         android:layout_width="match_parent"

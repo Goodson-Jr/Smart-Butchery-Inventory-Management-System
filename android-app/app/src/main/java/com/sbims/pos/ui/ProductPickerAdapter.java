@@ -33,6 +33,29 @@ public class ProductPickerAdapter extends RecyclerView.Adapter<ProductPickerAdap
         return products.get(selectedPosition);
     }
 
+    public Product findByBarcode(String barcode) {
+        if (barcode == null) return null;
+        for (Product product : products) {
+            if (barcode.equals(product.barcode)) return product;
+        }
+        return null;
+    }
+
+    /** Selects the product with the given id (e.g. after a barcode scan) and returns its position, or -1. */
+    public int selectById(int productId) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).id == productId) {
+                int previous = selectedPosition;
+                selectedPosition = i;
+                if (previous != RecyclerView.NO_POSITION) notifyItemChanged(previous);
+                notifyItemChanged(selectedPosition);
+                if (listener != null) listener.onProductSelected(products.get(i));
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

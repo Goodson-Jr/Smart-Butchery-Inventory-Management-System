@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             loginButton.setEnabled(true);
                             if (response.isSuccessful() && response.body() != null) {
-                                sessionManager.saveSession(response.body().token, response.body().role);
+                                sessionManager.saveSession(response.body().token, response.body().role, username);
                                 goToDashboard();
                             } else {
                                 showError(errorText, "Invalid username or password");

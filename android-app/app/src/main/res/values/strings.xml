@@ -24,10 +24,14 @@
     <string name="label_today_summary">Today: %1$s kg sold · K%2$s revenue</string>
 
     <string name="sale_title">Record Sale</string>
-    <string name="sale_subtitle">Tap a cut, then enter the weight sold</string>
+    <string name="sale_subtitle">Tap a cut, enter the weight, add to cart</string>
     <string name="hint_select_product">Select meat / cut</string>
     <string name="hint_weight_kg">Weight sold (kg)</string>
     <string name="label_line_total">Total: K%1$s</string>
+    <string name="action_add_to_cart">Add to Cart</string>
+    <string name="cart_title">Cart</string>
+    <string name="cart_empty">Cart is empty — tap a cut above to add one.</string>
+    <string name="label_grand_total">Grand total: K%1$s</string>
     <string name="action_complete_sale">Complete Sale</string>
 
     <string name="add_stock_title">Add Stock</string>
@@ -45,4 +49,15 @@
     <string name="wastage_subtitle">Tap a cut, then log the spoiled weight</string>
     <string name="hint_wastage_reason">Reason (e.g. expired, spoiled)</string>
     <string name="action_save_wastage">Log Wastage</string>
+
+    <string name="receipt_title">Sale Complete</string>
+    <string name="receipt_subtitle">Receipt #%1$s · %2$s</string>
+    <string name="label_receipt_total">Total: K%1$s</string>
+    <string name="action_print_receipt">Print Receipt</string>
+    <string name="action_done">Done</string>
+
+    <string name="action_scan_barcode">Scan Barcode</string>
+    <string name="scanner_instructions">Point the camera at a barcode</string>
+    <string name="error_camera_permission">Camera permission is needed to scan barcodes</string>
+    <string name="error_barcode_not_found">No product matches that barcode</string>
 </resources>

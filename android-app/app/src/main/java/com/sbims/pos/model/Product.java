@@ -18,6 +18,8 @@ public class Product {
     @SerializedName("low_stock_threshold_kg")
     public double lowStockThresholdKg;
 
+    public String barcode;
+
     public Product() {
     }
 

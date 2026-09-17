@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +27,8 @@
         <activity android:name=".ui.AddStockActivity" android:exported="false" />
         <activity android:name=".ui.StockListActivity" android:exported="false" />
         <activity android:name=".ui.WastageActivity" android:exported="false" />
+        <activity android:name=".ui.ReceiptActivity" android:exported="false" />
+        <activity android:name=".ui.BarcodeScannerActivity" android:exported="false" />
 
     </application>
 

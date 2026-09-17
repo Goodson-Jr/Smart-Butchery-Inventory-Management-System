@@ -1,7 +1,10 @@
 package com.sbims.pos.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,16 +24,25 @@ public class AddStockActivity extends AppCompatActivity {
 
     private final List<Product> products = new ArrayList<>();
     private ProductPickerAdapter adapter;
+    private RecyclerView productRecyclerView;
     private TextInputEditText quantityInput;
+
+    private final ActivityResultLauncher<Intent> scanLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    handleScannedBarcode(result.getData().getStringExtra(BarcodeScannerActivity.EXTRA_BARCODE));
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock);
 
-        RecyclerView productRecyclerView = findViewById(R.id.productRecyclerView);
+        productRecyclerView = findViewById(R.id.productRecyclerView);
         quantityInput = findViewById(R.id.quantityInput);
         MaterialButton saveStockButton = findViewById(R.id.saveStockButton);
+        MaterialButton scanBarcodeButton = findViewById(R.id.scanBarcodeButton);
 
         adapter = new ProductPickerAdapter(products, product -> {});
         productRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -39,6 +51,18 @@ public class AddStockActivity extends AppCompatActivity {
         loadProducts();
 
         saveStockButton.setOnClickListener(v -> submitStock(saveStockButton));
+        scanBarcodeButton.setOnClickListener(v -> scanLauncher.launch(new Intent(this, BarcodeScannerActivity.class)));
+    }
+
+    private void handleScannedBarcode(String barcode) {
+        if (barcode == null) return;
+        Product match = adapter.findByBarcode(barcode);
+        if (match == null) {
+            Toast.makeText(this, R.string.error_barcode_not_found, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int position = adapter.selectById(match.id);
+        if (position >= 0) productRecyclerView.scrollToPosition(position);
     }
 
     private void loadProducts() {
