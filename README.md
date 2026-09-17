@@ -20,3 +20,13 @@ npm run dev
 ```
 
 The API starts on `http://localhost:3000` by default. Health check: `GET /api/health`.
+
+## Live deployment
+
+The backend is deployed on Railway (Node.js app + MySQL), so the Android app and web dashboard can point at a real server instead of localhost:
+
+```
+https://sbims-backend-production.up.railway.app
+```
+
+Seeded accounts for testing: `admin`/`admin123`, `cashier`/`cashier123` (change these before any real submission/demo where security matters).
