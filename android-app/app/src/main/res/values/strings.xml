@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SBIMS POS</string>
+
+    <string name="login_title">Smart Butchery IMS</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="action_login">Log In</string>
+
+    <string name="dashboard_title">Dashboard</string>
+    <string name="action_sale">Record Sale</string>
+    <string name="action_add_stock">Add Stock</string>
+    <string name="action_view_stock">View Stock</string>
+    <string name="label_today_summary">Today: %1$s kg sold · K%2$s revenue</string>
+
+    <string name="sale_title">Record Sale</string>
+    <string name="hint_select_product">Select meat / cut</string>
+    <string name="hint_weight_kg">Weight sold (kg)</string>
+    <string name="label_line_total">Total: K%1$s</string>
+    <string name="action_complete_sale">Complete Sale</string>
+
+    <string name="add_stock_title">Add Stock</string>
+    <string name="hint_quantity_kg">Quantity received (kg)</string>
+    <string name="action_save_stock">Save</string>
+
+    <string name="stock_list_title">Available Stock</string>
+</resources>

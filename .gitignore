@@ -1,0 +1,26 @@
+# build / IDE
+target/
+build/
+.gradle/
+.idea/
+*.iml
+.vscode/
+*.class
+
+# android
+*.apk
+*.aab
+local.properties
+.cxx/
+
+# node (backend, web dashboard)
+node_modules/
+dist/
+.env
+
+# db / logs
+*.log
+data/*.db
+*.mv.db
+
+.DS_Store
