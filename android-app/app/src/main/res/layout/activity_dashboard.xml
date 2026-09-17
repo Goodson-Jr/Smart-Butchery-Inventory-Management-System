@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:background="@drawable/bg_tile_teal"
+                android:background="@drawable/bg_tile_steel"
                 android:padding="16dp"
                 android:layout_marginStart="8dp">
 
@@ -111,14 +111,14 @@
                     android:text="—"
                     android:textSize="26sp"
                     android:textStyle="bold"
-                    android:textColor="@color/teal_deep"
+                    android:textColor="@color/steel_deep"
                     android:letterSpacing="-0.02" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/stat_revenue"
-                    android:textColor="@color/teal_deep"
+                    android:textColor="@color/steel_deep"
                     android:textSize="12sp"
                     android:alpha="0.85" />
             </LinearLayout>
@@ -197,7 +197,7 @@
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 android:background="@drawable/bg_circle"
-                android:backgroundTint="@color/teal_deep">
+                android:backgroundTint="@color/steel_deep">
 
                 <ImageView
                     android:layout_width="22dp"
