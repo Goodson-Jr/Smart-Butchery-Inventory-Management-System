@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_footer"
-            style="@style/Text.Muted"
+            style="@style/TextMuted"
             android:layout_marginTop="22dp" />
 
     </LinearLayout>
