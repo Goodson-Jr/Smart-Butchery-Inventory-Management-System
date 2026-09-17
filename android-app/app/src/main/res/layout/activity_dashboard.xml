@@ -11,23 +11,54 @@
         android:orientation="vertical"
         android:padding="22dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dashboard_title"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/ink"
-            android:letterSpacing="-0.01" />
+            android:orientation="horizontal"
+            android:gravity="top">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashboard_subtitle"
-            android:textColor="@color/muted"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="20dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_title"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/ink"
+                    android:letterSpacing="-0.01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_subtitle"
+                    android:textColor="@color/muted"
+                    android:textSize="14sp"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_logout"
+                android:textColor="@color/ink_soft"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_card_outline"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="9dp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <!-- stat tiles -->
         <LinearLayout

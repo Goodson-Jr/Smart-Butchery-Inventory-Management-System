@@ -10,6 +10,7 @@
 
     <string name="dashboard_title">Dashboard</string>
     <string name="dashboard_subtitle">Today\'s activity at a glance</string>
+    <string name="action_logout">Log out</string>
     <string name="stat_kg_sold">Kg sold today</string>
     <string name="stat_revenue">Revenue today</string>
     <string name="action_sale">Record Sale</string>

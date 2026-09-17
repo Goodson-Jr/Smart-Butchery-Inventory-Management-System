@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.sbims.pos.R;
 import com.sbims.pos.model.DailySummary;
 import com.sbims.pos.network.ApiClient;
+import com.sbims.pos.network.SessionManager;
 import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,10 +30,20 @@ public class DashboardActivity extends AppCompatActivity {
         View saleButton = findViewById(R.id.saleButton);
         View addStockButton = findViewById(R.id.addStockButton);
         View viewStockButton = findViewById(R.id.viewStockButton);
+        View logoutButton = findViewById(R.id.logoutButton);
 
         saleButton.setOnClickListener(v -> startActivity(new Intent(this, SaleEntryActivity.class)));
         addStockButton.setOnClickListener(v -> startActivity(new Intent(this, AddStockActivity.class)));
         viewStockButton.setOnClickListener(v -> startActivity(new Intent(this, StockListActivity.class)));
+        logoutButton.setOnClickListener(v -> logout());
+    }
+
+    private void logout() {
+        new SessionManager(this).clear();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override
