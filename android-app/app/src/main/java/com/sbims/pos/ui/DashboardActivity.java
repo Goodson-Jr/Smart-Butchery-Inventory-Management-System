@@ -2,9 +2,9 @@ package com.sbims.pos.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.button.MaterialButton;
 import com.sbims.pos.R;
 import com.sbims.pos.model.DailySummary;
 import com.sbims.pos.network.ApiClient;
@@ -15,17 +15,20 @@ import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private TextView todaySummaryText;
+    private TextView kgSoldText;
+    private TextView revenueText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        todaySummaryText = findViewById(R.id.todaySummaryText);
-        MaterialButton saleButton = findViewById(R.id.saleButton);
-        MaterialButton addStockButton = findViewById(R.id.addStockButton);
-        MaterialButton viewStockButton = findViewById(R.id.viewStockButton);
+        kgSoldText = findViewById(R.id.kgSoldText);
+        revenueText = findViewById(R.id.revenueText);
+
+        View saleButton = findViewById(R.id.saleButton);
+        View addStockButton = findViewById(R.id.addStockButton);
+        View viewStockButton = findViewById(R.id.viewStockButton);
 
         saleButton.setOnClickListener(v -> startActivity(new Intent(this, SaleEntryActivity.class)));
         addStockButton.setOnClickListener(v -> startActivity(new Intent(this, AddStockActivity.class)));
@@ -44,17 +47,18 @@ public class DashboardActivity extends AppCompatActivity {
             public void onResponse(Call<DailySummary> call, Response<DailySummary> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     DailySummary summary = response.body();
-                    todaySummaryText.setText(getString(R.string.label_today_summary,
-                            String.format(Locale.getDefault(), "%.1f", summary.totalKgSold),
-                            String.format(Locale.getDefault(), "%.2f", summary.totalRevenue)));
+                    kgSoldText.setText(String.format(Locale.getDefault(), "%.1f", summary.totalKgSold));
+                    revenueText.setText(String.format(Locale.getDefault(), "K%.2f", summary.totalRevenue));
                 } else {
-                    todaySummaryText.setText(getString(R.string.label_today_summary, "-", "-"));
+                    kgSoldText.setText("—");
+                    revenueText.setText("—");
                 }
             }
 
             @Override
             public void onFailure(Call<DailySummary> call, Throwable t) {
-                todaySummaryText.setText(getString(R.string.label_today_summary, "-", "-"));
+                kgSoldText.setText("—");
+                revenueText.setText("—");
             }
         });
     }

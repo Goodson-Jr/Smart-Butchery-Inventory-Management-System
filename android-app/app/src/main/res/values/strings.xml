@@ -1,26 +1,40 @@
 <resources>
-    <string name="app_name">SBIMS POS</string>
+    <string name="app_name">Smart Butchery IMS</string>
 
-    <string name="login_title">Smart Butchery IMS</string>
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in with your staff account to continue.</string>
+    <string name="login_footer">SBIMS point of sale · authorised staff only</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="action_login">Log In</string>
 
     <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_subtitle">Today\'s activity at a glance</string>
+    <string name="stat_kg_sold">Kg sold today</string>
+    <string name="stat_revenue">Revenue today</string>
     <string name="action_sale">Record Sale</string>
+    <string name="action_sale_subtitle">Weigh and sell a cut</string>
     <string name="action_add_stock">Add Stock</string>
+    <string name="action_add_stock_subtitle">Log a fresh delivery</string>
     <string name="action_view_stock">View Stock</string>
+    <string name="action_view_stock_subtitle">See what\'s on the shelf</string>
     <string name="label_today_summary">Today: %1$s kg sold · K%2$s revenue</string>
 
     <string name="sale_title">Record Sale</string>
+    <string name="sale_subtitle">Tap a cut, then enter the weight sold</string>
     <string name="hint_select_product">Select meat / cut</string>
     <string name="hint_weight_kg">Weight sold (kg)</string>
     <string name="label_line_total">Total: K%1$s</string>
     <string name="action_complete_sale">Complete Sale</string>
 
     <string name="add_stock_title">Add Stock</string>
+    <string name="add_stock_subtitle">Tap a cut, then enter the delivery weight</string>
     <string name="hint_quantity_kg">Quantity received (kg)</string>
     <string name="action_save_stock">Save</string>
 
     <string name="stock_list_title">Available Stock</string>
+    <string name="stock_list_subtitle">Current stock by cut</string>
+    <string name="label_low_stock">Low stock</string>
+    <string name="label_kg">%1$s kg</string>
+    <string name="label_price_per_kg">K%1$s / kg</string>
 </resources>

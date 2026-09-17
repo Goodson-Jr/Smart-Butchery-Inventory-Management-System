@@ -13,19 +13,31 @@ import com.sbims.pos.model.Product;
 import java.util.List;
 import java.util.Locale;
 
-public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> {
+public class ProductPickerAdapter extends RecyclerView.Adapter<ProductPickerAdapter.ViewHolder> {
+
+    public interface OnProductSelectedListener {
+        void onProductSelected(Product product);
+    }
 
     private final List<Product> products;
+    private final OnProductSelectedListener listener;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
-    public StockAdapter(List<Product> products) {
+    public ProductPickerAdapter(List<Product> products, OnProductSelectedListener listener) {
         this.products = products;
+        this.listener = listener;
+    }
+
+    public Product getSelected() {
+        if (selectedPosition == RecyclerView.NO_POSITION || selectedPosition >= products.size()) return null;
+        return products.get(selectedPosition);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_stock, parent, false);
+                .inflate(R.layout.item_product_picker, parent, false);
         return new ViewHolder(view);
     }
 
@@ -35,11 +47,22 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
         holder.productNameText.setText(product.name);
         holder.productPriceText.setText(holder.itemView.getContext()
                 .getString(R.string.label_price_per_kg, String.format(Locale.getDefault(), "%.2f", product.pricePerKg)));
-        holder.stockKgText.setText(String.format(Locale.getDefault(), "%.2f kg", product.stockKg));
-        holder.lowStockText.setVisibility(product.isLowStock() ? View.VISIBLE : View.GONE);
+        holder.productStockText.setText(holder.itemView.getContext()
+                .getString(R.string.label_kg, String.format(Locale.getDefault(), "%.1f", product.stockKg)));
 
         int badgeColor = ContextCompat.getColor(holder.itemView.getContext(), CategoryColors.colorRes(product.categoryName));
         holder.badgeBg.setBackgroundTintList(ColorStateList.valueOf(badgeColor));
+
+        holder.cardRoot.setBackgroundResource(
+                position == selectedPosition ? R.drawable.bg_card_selected : R.drawable.bg_card_outline);
+
+        holder.itemView.setOnClickListener(v -> {
+            int previous = selectedPosition;
+            selectedPosition = holder.getBindingAdapterPosition();
+            if (previous != RecyclerView.NO_POSITION) notifyItemChanged(previous);
+            notifyItemChanged(selectedPosition);
+            if (listener != null) listener.onProductSelected(product);
+        });
     }
 
     @Override
@@ -47,20 +70,27 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
         return products.size();
     }
 
+    public void replaceAll(List<Product> newProducts) {
+        products.clear();
+        products.addAll(newProducts);
+        selectedPosition = RecyclerView.NO_POSITION;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
+        final View cardRoot;
         final View badgeBg;
         final TextView productNameText;
         final TextView productPriceText;
-        final TextView stockKgText;
-        final TextView lowStockText;
+        final TextView productStockText;
 
         ViewHolder(View itemView) {
             super(itemView);
+            cardRoot = itemView.findViewById(R.id.cardRoot);
             badgeBg = itemView.findViewById(R.id.badgeBg);
             productNameText = itemView.findViewById(R.id.productNameText);
             productPriceText = itemView.findViewById(R.id.productPriceText);
-            stockKgText = itemView.findViewById(R.id.stockKgText);
-            lowStockText = itemView.findViewById(R.id.lowStockText);
+            productStockText = itemView.findViewById(R.id.productStockText);
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.sbims.pos.ui;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sbims.pos.R;
@@ -20,7 +20,7 @@ import retrofit2.Response;
 public class AddStockActivity extends AppCompatActivity {
 
     private final List<Product> products = new ArrayList<>();
-    private Spinner productSpinner;
+    private ProductPickerAdapter adapter;
     private TextInputEditText quantityInput;
 
     @Override
@@ -28,9 +28,13 @@ public class AddStockActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock);
 
-        productSpinner = findViewById(R.id.productSpinner);
+        RecyclerView productRecyclerView = findViewById(R.id.productRecyclerView);
         quantityInput = findViewById(R.id.quantityInput);
         MaterialButton saveStockButton = findViewById(R.id.saveStockButton);
+
+        adapter = new ProductPickerAdapter(products, product -> {});
+        productRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        productRecyclerView.setAdapter(adapter);
 
         loadProducts();
 
@@ -41,15 +45,9 @@ public class AddStockActivity extends AppCompatActivity {
         ApiClient.getService(this).getProducts().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                products.clear();
-                if (response.isSuccessful() && response.body() != null) {
-                    products.addAll(response.body());
-                }
-                List<String> names = new ArrayList<>();
-                for (Product p : products) names.add(p.name);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(AddStockActivity.this,
-                        android.R.layout.simple_spinner_dropdown_item, names);
-                productSpinner.setAdapter(adapter);
+                List<Product> loaded = response.isSuccessful() && response.body() != null
+                        ? response.body() : new ArrayList<>();
+                adapter.replaceAll(loaded);
             }
 
             @Override
@@ -61,8 +59,8 @@ public class AddStockActivity extends AppCompatActivity {
     }
 
     private void submitStock(MaterialButton saveStockButton) {
-        int position = productSpinner.getSelectedItemPosition();
-        if (position < 0 || position >= products.size()) {
+        Product selected = adapter.getSelected();
+        if (selected == null) {
             Toast.makeText(this, "Select a product first", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -79,7 +77,6 @@ public class AddStockActivity extends AppCompatActivity {
             return;
         }
 
-        Product selected = products.get(position);
         saveStockButton.setEnabled(false);
         ApiClient.getService(this).addStock(new StockBatchRequest(selected.id, quantity))
                 .enqueue(new Callback<Void>() {

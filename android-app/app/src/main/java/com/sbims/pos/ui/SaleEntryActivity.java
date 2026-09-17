@@ -3,11 +3,11 @@ package com.sbims.pos.ui;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sbims.pos.R;
@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class SaleEntryActivity extends AppCompatActivity {
 
     private final List<Product> products = new ArrayList<>();
-    private Spinner productSpinner;
+    private ProductPickerAdapter adapter;
     private TextInputEditText weightInput;
     private TextView lineTotalText;
 
@@ -34,10 +34,14 @@ public class SaleEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_entry);
 
-        productSpinner = findViewById(R.id.productSpinner);
+        RecyclerView productRecyclerView = findViewById(R.id.productRecyclerView);
         weightInput = findViewById(R.id.weightInput);
         lineTotalText = findViewById(R.id.lineTotalText);
         MaterialButton completeSaleButton = findViewById(R.id.completeSaleButton);
+
+        adapter = new ProductPickerAdapter(products, product -> updateLineTotal());
+        productRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        productRecyclerView.setAdapter(adapter);
 
         loadProducts();
 
@@ -61,15 +65,9 @@ public class SaleEntryActivity extends AppCompatActivity {
         ApiClient.getService(this).getProducts().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                products.clear();
-                if (response.isSuccessful() && response.body() != null) {
-                    products.addAll(response.body());
-                }
-                List<String> names = new ArrayList<>();
-                for (Product p : products) names.add(p.name);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(SaleEntryActivity.this,
-                        android.R.layout.simple_spinner_dropdown_item, names);
-                productSpinner.setAdapter(adapter);
+                List<Product> loaded = response.isSuccessful() && response.body() != null
+                        ? response.body() : new ArrayList<>();
+                adapter.replaceAll(loaded);
                 updateLineTotal();
             }
 
@@ -83,7 +81,7 @@ public class SaleEntryActivity extends AppCompatActivity {
 
     private void updateLineTotal() {
         double total = 0;
-        Product selected = selectedProduct();
+        Product selected = adapter.getSelected();
         double weight = parseWeight();
         if (selected != null) {
             total = selected.pricePerKg * weight;
@@ -100,14 +98,8 @@ public class SaleEntryActivity extends AppCompatActivity {
         }
     }
 
-    private Product selectedProduct() {
-        int position = productSpinner.getSelectedItemPosition();
-        if (position < 0 || position >= products.size()) return null;
-        return products.get(position);
-    }
-
     private void submitSale(MaterialButton completeSaleButton) {
-        Product selected = selectedProduct();
+        Product selected = adapter.getSelected();
         double weight = parseWeight();
 
         if (selected == null) {

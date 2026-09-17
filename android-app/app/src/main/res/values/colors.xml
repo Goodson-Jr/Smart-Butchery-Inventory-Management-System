@@ -1,7 +1,32 @@
 <resources>
-    <color name="primary">#8B4A3C</color>
-    <color name="primary_dark">#6B372C</color>
-    <color name="accent">#C08874</color>
-    <color name="background">#F5EFE8</color>
-    <color name="text_primary">#3A2E28</color>
+    <!-- Café-POS palette (docs/../Advanced Software Engineering Project), ported for SBIMS -->
+    <color name="bg">#F4ECE0</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="ink">#3A2E26</color>
+    <color name="ink_soft">#6B5A4A</color>
+    <color name="muted">#9B8B7A</color>
+    <color name="line">#ECE1D2</color>
+    <color name="brand">#B07D56</color>
+    <color name="brand_deep">#8A5A3C</color>
+    <color name="yellow">#F7E4B0</color>
+    <color name="yellow_soft">#FDF1D6</color>
+    <color name="teal">#CFE6E4</color>
+    <color name="teal_deep">#3E7C8B</color>
+    <color name="dark">#2F3A34</color>
+    <color name="danger">#B6503F</color>
+    <color name="ok">#4F7A44</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- category badge colors -->
+    <color name="cat_beef">#8A5A3C</color>
+    <color name="cat_chicken">#D9A552</color>
+    <color name="cat_pork">#C9887A</color>
+    <color name="cat_default">#9B8B7A</color>
+
+    <!-- legacy aliases kept for any lingering references -->
+    <color name="primary">@color/brand_deep</color>
+    <color name="primary_dark">@color/dark</color>
+    <color name="accent">@color/brand</color>
+    <color name="background">@color/bg</color>
+    <color name="text_primary">@color/ink</color>
 </resources>
