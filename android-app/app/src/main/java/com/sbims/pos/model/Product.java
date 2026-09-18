@@ -20,6 +20,9 @@ public class Product {
 
     public String barcode;
 
+    @SerializedName("category_id")
+    public int categoryId;
+
     public Product() {
     }
 

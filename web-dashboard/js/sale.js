@@ -98,27 +98,19 @@ document.getElementById('completeSaleButton').addEventListener('click', async ()
     const button = document.getElementById('completeSaleButton');
     button.disabled = true;
 
-    // NOTE: the backend doesn't have a batch/atomic checkout endpoint yet
-    // (see #24 discussion), so each cart line is submitted as its own
-    // POST /api/sales call in sequence. This is not atomic across the whole
-    // cart -- if line 3 of 5 fails, lines 1-2 have already gone through.
-    const lines = [];
+    const items = cart.map((item) => ({ product_id: item.product.id, quantity_kg: item.quantityKg }));
+
     try {
-        for (const item of cart) {
-            const result = await Api.recordSale(item.product.id, item.quantityKg);
-            lines.push({
-                name: item.product.name,
-                quantityKg: item.quantityKg,
-                unitPrice: item.product.price_per_kg,
-                totalPrice: result.total_price,
-            });
-        }
-        showReceipt(lines);
+        const result = await Api.checkout(items);
+        showReceipt(result.lines.map((l) => ({
+            name: l.product_name,
+            quantityKg: l.quantity_kg,
+            unitPrice: l.unit_price,
+            totalPrice: l.total_price,
+        })));
     } catch (err) {
-        alert('Sale failed partway through: ' + err.message +
-              (lines.length ? `\n\n${lines.length} item(s) already went through before the failure.` : ''));
+        alert('Sale failed: ' + err.message);
         button.disabled = false;
-        if (lines.length) showReceipt(lines);
     }
 });
 

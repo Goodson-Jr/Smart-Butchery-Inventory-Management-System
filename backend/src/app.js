@@ -6,6 +6,7 @@ const productRoutes = require('./routes/productRoutes');
 const saleRoutes = require('./routes/saleRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 const wastageRoutes = require('./routes/wastageRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/api', productRoutes);
 app.use('/api', saleRoutes);
 app.use('/api', stockRoutes);
 app.use('/api', wastageRoutes);
+app.use('/api', reportRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
