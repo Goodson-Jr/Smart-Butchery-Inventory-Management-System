@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,14 +20,29 @@ import com.sbims.pos.network.ApiClient;
 import com.sbims.pos.network.SessionManager;
 import java.util.List;
 import java.util.Locale;
+import java.util.TreeSet;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    private static final long REFRESH_INTERVAL_MS = 5000;
+
     private TextView kgSoldText;
     private TextView revenueText;
+    private final Handler refreshHandler = new Handler(Looper.getMainLooper());
+    private String lastNotifiedSignature = null;
+
+    private final Runnable refreshLoop = new Runnable() {
+        @Override
+        public void run() {
+            loadTodaySummary();
+            checkLowStock();
+            refreshHandler.postDelayed(this, REFRESH_INTERVAL_MS);
+        }
+    };
+
     private final ActivityResultLauncher<String> notificationPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> checkLowStock());
 
@@ -63,8 +80,15 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadTodaySummary();
         requestNotificationPermissionIfNeeded();
+        refreshHandler.removeCallbacks(refreshLoop);
+        refreshHandler.post(refreshLoop);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        refreshHandler.removeCallbacks(refreshLoop);
     }
 
     private void requestNotificationPermissionIfNeeded() {
@@ -72,8 +96,6 @@ public class DashboardActivity extends AppCompatActivity {
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-        } else {
-            checkLowStock();
         }
     }
 
@@ -81,9 +103,23 @@ public class DashboardActivity extends AppCompatActivity {
         ApiClient.getService(this).getLowStockAlerts().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    LowStockNotifier.notifyIfLowStock(DashboardActivity.this, response.body());
+                if (!response.isSuccessful() || response.body() == null) return;
+
+                List<Product> lowStock = response.body();
+                if (lowStock.isEmpty()) {
+                    lastNotifiedSignature = null;
+                    return;
                 }
+
+                // Only notify when the low-stock set actually changes -- otherwise
+                // a 5s poll would re-notify constantly for the same items.
+                TreeSet<Integer> ids = new TreeSet<>();
+                for (Product p : lowStock) ids.add(p.id);
+                String signature = ids.toString();
+                if (signature.equals(lastNotifiedSignature)) return;
+                lastNotifiedSignature = signature;
+
+                LowStockNotifier.notifyIfLowStock(DashboardActivity.this, lowStock);
             }
 
             @Override

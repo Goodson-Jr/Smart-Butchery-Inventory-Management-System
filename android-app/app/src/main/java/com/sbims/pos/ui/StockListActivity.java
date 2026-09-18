@@ -1,6 +1,8 @@
 package com.sbims.pos.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +18,19 @@ import retrofit2.Response;
 
 public class StockListActivity extends AppCompatActivity {
 
+    private static final long REFRESH_INTERVAL_MS = 5000;
+
     private RecyclerView stockRecyclerView;
+    private StockAdapter adapter;
+    private final Handler refreshHandler = new Handler(Looper.getMainLooper());
+
+    private final Runnable refreshLoop = new Runnable() {
+        @Override
+        public void run() {
+            loadStock();
+            refreshHandler.postDelayed(this, REFRESH_INTERVAL_MS);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +40,21 @@ public class StockListActivity extends AppCompatActivity {
         stockRecyclerView = findViewById(R.id.stockRecyclerView);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadStock();
+        adapter = new StockAdapter(new ArrayList<>());
+        stockRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshHandler.removeCallbacks(refreshLoop);
+        refreshHandler.post(refreshLoop);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        refreshHandler.removeCallbacks(refreshLoop);
     }
 
     private void loadStock() {
@@ -35,14 +63,13 @@ public class StockListActivity extends AppCompatActivity {
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 List<Product> products = response.isSuccessful() && response.body() != null
                         ? response.body() : new ArrayList<>();
-                stockRecyclerView.setAdapter(new StockAdapter(products));
+                adapter.replaceAll(products);
             }
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
                 Toast.makeText(StockListActivity.this, "Could not load stock: " + t.getMessage(),
                         Toast.LENGTH_LONG).show();
-                stockRecyclerView.setAdapter(new StockAdapter(new ArrayList<>()));
             }
         });
     }

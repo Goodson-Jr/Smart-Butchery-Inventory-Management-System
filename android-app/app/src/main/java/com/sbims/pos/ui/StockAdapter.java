@@ -47,6 +47,12 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
         return products.size();
     }
 
+    public void replaceAll(List<Product> newProducts) {
+        products.clear();
+        products.addAll(newProducts);
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         final View badgeBg;
         final TextView productNameText;
