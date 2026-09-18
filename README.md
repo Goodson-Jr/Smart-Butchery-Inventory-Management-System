@@ -23,7 +23,7 @@ The API starts on `http://localhost:3000` by default. Health check: `GET /api/he
 
 ## Live deployment
 
-The backend is deployed on Railway (Node.js app + MySQL), so the Android app and web dashboard can point at a real server instead of localhost. It auto-deploys on every push to `main`:
+The backend is deployed on Railway (Node.js app + MySQL), so the Android app and web dashboard can point at a real server instead of localhost. Auto-deploy-on-push isn't reliably firing right now (Railway's GitHub connection needs re-authorizing after the repo rename) — ping Goodson after merging to main if you need the live URL updated with your changes:
 
 ```
 https://smart-butchery-inventory-management-system-production.up.railway.app
