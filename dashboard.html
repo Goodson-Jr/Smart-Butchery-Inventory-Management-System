@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Dashboard</h1>
+            <p>Today's activity at a glance</p>
+        </div>
+
+        <div class="tiles">
+            <div class="tile tile--yellow">
+                <div class="n" id="kgSoldText">—</div>
+                <div class="l">Kg sold today</div>
+            </div>
+            <div class="tile tile--steel">
+                <div class="n" id="revenueText">—</div>
+                <div class="l">Revenue today</div>
+            </div>
+        </div>
+
+        <div id="lowStockNote" class="note err" hidden></div>
+
+        <a href="sale.html" class="action-row card-outline">
+            <span class="action-icon" style="background: var(--brand-deep)">&#128179;</span>
+            <span class="action-body">
+                <div class="t">Record Sale</div>
+                <div class="s">Weigh and sell a cut</div>
+            </span>
+            <span class="action-arrow">&rsaquo;</span>
+        </a>
+
+        <a href="add-stock.html" class="action-row card-outline">
+            <span class="action-icon" style="background: var(--steel-deep)">&#43;</span>
+            <span class="action-body">
+                <div class="t">Add Stock</div>
+                <div class="s">Log a fresh delivery</div>
+            </span>
+            <span class="action-arrow">&rsaquo;</span>
+        </a>
+
+        <a href="stock.html" class="action-row card-outline">
+            <span class="action-icon" style="background: var(--dark)">&#9776;</span>
+            <span class="action-body">
+                <div class="t">View Stock</div>
+                <div class="s">See what's on the shelf</div>
+            </span>
+            <span class="action-arrow">&rsaquo;</span>
+        </a>
+
+        <a href="wastage.html" class="action-row card-outline">
+            <span class="action-icon" style="background: var(--danger)">&#128465;</span>
+            <span class="action-body">
+                <div class="t">Record Wastage</div>
+                <div class="s">Log spoiled or expired stock</div>
+            </span>
+            <span class="action-arrow">&rsaquo;</span>
+        </a>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
