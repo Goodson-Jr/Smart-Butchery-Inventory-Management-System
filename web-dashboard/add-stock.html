@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Stock · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Add Stock</h1>
+            <p>Tap a cut, then enter the delivery weight</p>
+        </div>
+
+        <div id="permissionNote" class="note err" hidden>Adding stock requires an admin account. Log in as admin to use this screen.</div>
+
+        <button type="button" class="btn dark" id="scanButton" style="margin-bottom: 16px;">Scan Barcode</button>
+
+        <div id="productGrid" class="product-grid"></div>
+
+        <div class="card">
+            <div class="field">
+                <label for="quantityInput">Quantity received (kg)</label>
+                <input id="quantityInput" type="number" step="0.01" min="0" placeholder="e.g. 10">
+            </div>
+            <button type="button" class="btn dark" id="saveStockButton">Save</button>
+        </div>
+    </main>
+</div>
+
+<div id="scanOverlay" class="modal-overlay" hidden>
+    <div class="scan-modal">
+        <div class="scan-head">
+            <span>Point the camera at a barcode</span>
+            <span class="close" onclick="closeScanModal()">&times;</span>
+        </div>
+        <div id="scanReader"></div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/barcode.js"></script>
+<script src="js/add-stock.js"></script>
+</body>
+</html>

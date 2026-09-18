@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 10.0.2.2 is the Android emulator's alias for the host machine's
+         localhost, used during local dev against the backend over plain
+         HTTP. Remove this once the backend is deployed over HTTPS (#10). -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

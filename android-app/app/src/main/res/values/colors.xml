@@ -1,0 +1,32 @@
+<resources>
+    <!-- Butchery palette: cream/paper background, blood-red brand, charcoal darks -->
+    <color name="bg">#F5EDE4</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="ink">#2B211D</color>
+    <color name="ink_soft">#5C463D</color>
+    <color name="muted">#9C8778</color>
+    <color name="line">#E8DCCB</color>
+    <color name="brand">#A9302A</color>
+    <color name="brand_deep">#7A1F1B</color>
+    <color name="yellow">#F2D48B</color>
+    <color name="yellow_soft">#FBEFD2</color>
+    <color name="steel">#DCE1E2</color>
+    <color name="steel_deep">#55636B</color>
+    <color name="dark">#201B1A</color>
+    <color name="danger">#A83226</color>
+    <color name="ok">#4F7A44</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- category badge colors -->
+    <color name="cat_beef">#7A1F1B</color>
+    <color name="cat_chicken">#C99A4E</color>
+    <color name="cat_pork">#C77A6E</color>
+    <color name="cat_default">#9C8778</color>
+
+    <!-- legacy aliases kept for any lingering references -->
+    <color name="primary">@color/brand_deep</color>
+    <color name="primary_dark">@color/dark</color>
+    <color name="accent">@color/brand</color>
+    <color name="background">@color/bg</color>
+    <color name="text_primary">@color/ink</color>
+</resources>
