@@ -2,7 +2,7 @@
 // Talks to the same backend as the Android app -- Goodson's live Railway
 // deployment by default. Swap to the local URL below when developing
 // against a backend running on your own machine instead.
-const API_BASE = 'https://sbims-backend-production.up.railway.app/api';
+const API_BASE = 'https://smart-butchery-inventory-management-system-production.up.railway.app/api';
 // const API_BASE = 'http://localhost:3000/api';
 
 const Session = {

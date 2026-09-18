@@ -13,7 +13,7 @@ public class ApiClient {
     // machine instead -- 10.0.2.2 is the emulator's alias for the host's
     // localhost, and needs the cleartext exception in
     // res/xml/network_security_config.xml since it's plain HTTP.
-    private static final String BASE_URL = "https://sbims-backend-production.up.railway.app/";
+    private static final String BASE_URL = "https://smart-butchery-inventory-management-system-production.up.railway.app/";
     // private static final String BASE_URL = "http://10.0.2.2:3000/";
 
     private static Retrofit retrofit;
