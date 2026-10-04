@@ -1,6 +1,11 @@
 requireAuth();
 renderShell('reports');
 
+if (Session.getRole() !== 'admin') {
+    alert('Only admin accounts can view reports');
+    window.location.href = 'dashboard.html';
+}
+
 function todayStr() {
     return new Date().toISOString().slice(0, 10);
 }
