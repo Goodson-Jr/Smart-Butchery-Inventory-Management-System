@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Users · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+    <style>
+        .user-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .user-grid .field { margin-bottom: 0; }
+        @media (max-width: 700px) { .user-grid { grid-template-columns: 1fr; } }
+        .inactive-row { opacity: .55; }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Manage Users</h1>
+            <p>Create staff accounts, change roles, reset passwords, or deactivate someone who has left</p>
+        </div>
+
+        <div id="pageNote" class="note" hidden></div>
+
+        <div class="card" style="margin-bottom: 22px;">
+            <h3 style="margin-top:0;">Add a user</h3>
+            <div class="user-grid">
+                <div class="field">
+                    <label for="newUsername">Username</label>
+                    <input id="newUsername" type="text" maxlength="50" autocomplete="off" placeholder="e.g. mwila">
+                </div>
+                <div class="field">
+                    <label for="newPassword">Password (at least 6 characters)</label>
+                    <input id="newPassword" type="password" autocomplete="new-password">
+                </div>
+                <div class="field">
+                    <label for="newRole">Role</label>
+                    <select id="newRole">
+                        <option value="cashier">Cashier</option>
+                        <option value="admin">Admin (manager)</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn dark" id="addUserButton">Add User</button>
+        </div>
+
+        <h3>All users</h3>
+        <div class="card" id="userList"><p class="muted">Loading…</p></div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/users.js"></script>
+</body>
+</html>

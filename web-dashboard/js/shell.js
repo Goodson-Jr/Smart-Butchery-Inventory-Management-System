@@ -9,6 +9,7 @@ function renderShell(activePage) {
         { id: 'wastage-review', href: 'wastage-review.html', label: 'Wastage Approvals', adminOnly: true },
         { id: 'products', href: 'products.html', label: 'Manage Products', adminOnly: true },
         { id: 'reports', href: 'reports.html', label: 'Reports' },
+        { id: 'users', href: 'users.html', label: 'Manage Users', adminOnly: true },
     ];
 
     const isAdmin = Session.getRole() === 'admin';

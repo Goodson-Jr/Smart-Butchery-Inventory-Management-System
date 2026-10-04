@@ -18,6 +18,9 @@ router.post('/login', async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password_hash))) {
     return res.status(401).json({ error: 'Invalid username or password' });
   }
+  if (!user.is_active) {
+    return res.status(403).json({ error: 'This account has been deactivated. Ask a manager to reactivate it.' });
+  }
 
   const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: '12h',
