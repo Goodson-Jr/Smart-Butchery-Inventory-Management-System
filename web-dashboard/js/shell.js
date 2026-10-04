@@ -5,7 +5,8 @@ function renderShell(activePage) {
         { id: 'sale', href: 'sale.html', label: 'Record Sale' },
         { id: 'add-stock', href: 'add-stock.html', label: 'Add Stock', adminOnly: true },
         { id: 'stock', href: 'stock.html', label: 'Available Stock' },
-        { id: 'wastage', href: 'wastage.html', label: 'Record Wastage' },
+        { id: 'wastage', href: 'wastage.html', label: 'Report Wastage' },
+        { id: 'wastage-review', href: 'wastage-review.html', label: 'Wastage Approvals', adminOnly: true },
         { id: 'products', href: 'products.html', label: 'Manage Products', adminOnly: true },
         { id: 'reports', href: 'reports.html', label: 'Reports' },
     ];

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Record Wastage · Smart Butchery IMS</title>
+    <title>Report Wastage · Smart Butchery IMS</title>
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -11,8 +11,8 @@
     <aside class="sidebar" id="sidebar"></aside>
     <main class="main">
         <div class="page-head">
-            <h1>Record Wastage</h1>
-            <p>Tap a cut, then log the spoiled weight</p>
+            <h1>Report Wastage</h1>
+            <p id="pageSubtitle">Tap a cut, then report the spoiled weight. A manager has to approve it before it comes off stock.</p>
         </div>
 
         <div id="productGrid" class="product-grid"></div>
@@ -23,11 +23,24 @@
                 <input id="quantityInput" type="number" step="0.01" min="0" placeholder="e.g. 0.5">
             </div>
             <div class="field">
-                <label for="reasonInput">Reason (e.g. expired, spoiled)</label>
-                <input id="reasonInput" type="text" placeholder="Reason">
+                <label for="reasonSelect">Reason</label>
+                <select id="reasonSelect">
+                    <option value="">Choose a reason</option>
+                    <option value="SPOILAGE">Spoilage</option>
+                    <option value="EXPIRY">Expired</option>
+                    <option value="TRIM">Trim / offcuts</option>
+                    <option value="OTHER">Other</option>
+                </select>
             </div>
-            <button type="button" class="btn danger" id="saveWastageButton">Log Wastage</button>
+            <div class="field">
+                <label for="noteInput">Note (optional)</label>
+                <input id="noteInput" type="text" maxlength="255" placeholder="e.g. smelled off, fridge 2 failed overnight">
+            </div>
+            <button type="button" class="btn danger" id="saveWastageButton">Report Wastage</button>
         </div>
+
+        <h3>My recent reports</h3>
+        <div class="card" id="myReports"><p class="muted">Loading…</p></div>
     </main>
 </div>
 

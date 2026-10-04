@@ -9,11 +9,15 @@ public class WastageRequest {
     @SerializedName("quantity_kg")
     public double quantityKg;
 
+    /** One of SPOILAGE, EXPIRY, TRIM, OTHER. */
     public String reason;
 
-    public WastageRequest(int productId, double quantityKg, String reason) {
+    public String note;
+
+    public WastageRequest(int productId, double quantityKg, String reason, String note) {
         this.productId = productId;
         this.quantityKg = quantityKg;
         this.reason = reason;
+        this.note = note;
     }
 }

@@ -69,8 +69,10 @@ router.get('/reports/stock-usage', requireAuth, async (req, res) => {
        WHERE DATE(sold_at) BETWEEN ? AND ? GROUP BY product_id
      ) s ON s.product_id = p.id
      LEFT JOIN (
+       -- Only approved wastage actually left the stock (#39), and it left
+       -- on the day it was approved.
        SELECT product_id, SUM(quantity_kg) AS total_wasted FROM wastage
-       WHERE DATE(recorded_at) BETWEEN ? AND ? GROUP BY product_id
+       WHERE status = 'APPROVED' AND DATE(reviewed_at) BETWEEN ? AND ? GROUP BY product_id
      ) w ON w.product_id = p.id
      WHERE p.is_active = TRUE
      ORDER BY p.name`,
