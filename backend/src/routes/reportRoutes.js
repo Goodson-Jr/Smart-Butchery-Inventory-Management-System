@@ -1,12 +1,14 @@
 const express = require('express');
 const pool = require('../config/db');
+const { businessDate } = require('../config/db');
 const { requireAuth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
 function resolveDateRange(req) {
-  const to = req.query.to || new Date().toISOString().slice(0, 10);
-  const from = req.query.from || new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  // Defaults to the last 7 days in the shop's time zone, not UTC (#45).
+  const to = req.query.to || businessDate();
+  const from = req.query.from || businessDate(6);
   return { from, to };
 }
 
