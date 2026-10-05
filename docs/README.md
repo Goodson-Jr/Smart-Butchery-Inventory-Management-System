@@ -9,19 +9,19 @@ diagrams noted in each file (draw.io or Mermaid).
 
 | File | Contents | Status | Lead |
 |---|---|---|---|
-| `problem-statement.md` | Background, problem, stakeholders, objectives, scope, success criteria | 🟡 skeleton (from proposal) | Josiphiah |
-| `inception-report.md` | Vision, business case, actors, use-case list, top risks, feasibility, team | 🟡 skeleton | Josiphiah |
-| `high-level-requirements.md` | Actors, functional requirements (FR), non-functional requirements (NFR), assumptions | 🟡 skeleton | Josiphiah |
-| `risk-and-feasibility.md` | Technical / economic / operational / schedule feasibility + risk register | 🟡 skeleton | Goodson |
-| `detailed-use-cases.md` | Fully-dressed use cases (Log In, Record Sale, Add Stock, Record Wastage, Generate Reports) + brief entries | 🟡 skeleton | Josiphiah |
-| `domain-model.md` | Conceptual class model — weight-based stock, meat types & cuts, sales, wastage | 🟡 skeleton | Goodson |
-| `design-class-diagram.md` | Software view — controllers / services / repositories / entities | ☐ after backend design | Goodson |
-| `architecture.md` | 3-tier + REST; how Android and the web dashboard connect; deployment | 🟡 skeleton | Goodson |
-| `system-sequence-diagrams.md` | SSDs for Log In, Record Sale, Add Stock, Generate Reports | 🟡 skeleton | Josiphiah |
-| `database-design.md` | ERD, data dictionary, 1NF→2NF→3NF walkthrough, `CREATE TABLE` | ☐ after schema | Goodson |
-| `test-plan.md` | Test approach, automated test list, manual test cases | ☐ after build starts | Goodson |
-| `user-manual.md` | How to use the Android app and the web dashboard (screenshots) | ☐ after screens exist | Josiphiah |
-| `final-report.md` | Intro, tools, architecture summary, contribution table, challenges, conclusion | ☐ near submission | Both |
+| `problem-statement.md` | Background, problem, stakeholders, objectives, scope, success criteria | 🟢 done | Josiphiah |
+| `inception-report.md` | Vision, business case, actors, use-case list, top risks, feasibility, team | 🟢 done | Josiphiah |
+| `high-level-requirements.md` | Actors, functional requirements (FR), non-functional requirements (NFR), assumptions | 🟢 done (FR12/FR16 reworded to match what was built) | Josiphiah |
+| `risk-and-feasibility.md` | Technical / economic / operational / schedule feasibility + risk register | 🟢 done, updated with test-confirmed risk status | Goodson |
+| `detailed-use-cases.md` | Fully-dressed use cases (Log In, Record Sale, Add Stock, Record Wastage, Generate Reports) + brief entries | 🟢 done | Josiphiah |
+| `domain-model.md` | Conceptual class model — weight-based stock, meat types & cuts, sales, wastage | 🟢 done, aligned to the real schema | Goodson |
+| `design-class-diagram.md` | Software view — the real module structure (no separate service/repository layer) | 🟢 done | Goodson |
+| `architecture.md` | 3-tier + REST; how Android and the web dashboard connect; deployment | 🟢 done, incl. Railway/GitHub Pages deployment | Goodson |
+| `system-sequence-diagrams.md` | SSDs for Log In, Record Sale, Add Stock, Generate Reports | 🟢 done | Josiphiah |
+| `database-design.md` | ERD, data dictionary, 1NF→2NF→3NF walkthrough, `CREATE TABLE` | 🟢 done, matches real schema | Goodson |
+| `test-plan.md` | Test approach, automated test list, manual test cases | 🟢 done — 43 automated tests documented | Goodson |
+| `user-manual.md` | How to use the Android app and the web dashboard (screenshots) | ☐ still open — screens exist now, needs doing | Josiphiah |
+| `final-report.md` | Intro, tools, architecture summary, contribution table, challenges, conclusion | ☐ still open — near submission | Both |
 
 ## Source material
 
