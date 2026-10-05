@@ -28,13 +28,13 @@
 ### Stock (weight-based)
 - **FR10** Every cut has a current **available weight in kilograms**.
 - **FR11** A user can record a **delivery** (stock in) for a cut: a weight in kg, with the date and who recorded it; this increases the cut's available weight.
-- **FR12** Every change to a cut's stock (delivery, sale, wastage, manual adjustment) is written to a stock-movement ledger with the weight, timestamp, type and user.
+- **FR12** Every change to a cut's stock (delivery, sale, wastage) is recorded with its weight, timestamp, and the user responsible, held in the table for that action type (`stock_batches`, `sales`, `wastage`) rather than a single unified stock-movement ledger table. *(Reworded from the original "ledger" wording — see Assumptions & constraints.)*
 - **FR13** A user can view current available weight per cut, grouped by meat type.
 
 ### Sales (by weight)
 - **FR14** A cashier selects a cut and enters the **weight sold in kg**; the system computes the line amount as weight × price per kg.
 - **FR15** A sale may contain one or more lines.
-- **FR16** On completing a sale the system, in **one transaction**: records the sale and its lines (with a snapshot of the cut name and price per kg), deducts the sold weight from each cut's available weight, and writes a SALE stock-movement per line.
+- **FR16** On completing a sale the system processes every line in **one transaction**: each line's weight is validated against the cut's current available weight, stock is deducted, and a sale row is written per line with a snapshot of the cut name and price per kg at sale time. Lines from one checkout are not grouped under a single parent sale record — each is its own row, correlated by timestamp and the cashier who made the sale. *(Reworded — see Assumptions & constraints.)*
 - **FR17** The system rejects a sale line whose weight exceeds the cut's current available weight; nothing is saved.
 - **FR18** A cashier can view today's sales total (kg sold and revenue).
 
@@ -55,7 +55,7 @@
 
 - **NFR1 Security** — token-based API auth; role-gated sensitive actions; passwords hashed; state-changing requests protected (CSRF on the web dashboard, token on the API).
 - **NFR2 Data integrity** — weights and money as fixed-point decimals; each sale/delivery/wastage is one atomic transaction; concurrent sales on one cut are serialised so stock cannot go negative.
-- **NFR3 Auditability** — every stock change is in the movement ledger with user and time; sale lines snapshot the cut name and price.
+- **NFR3 Auditability** — every stock change carries the responsible user and a timestamp in its own table (deliveries in `stock_batches`, sales in `sales`, wastage in `wastage` — wastage additionally records who approved or rejected it, and when); sale lines snapshot the cut name and price. Not consolidated into a single cross-type ledger table.
 - **NFR4 Availability offline-tolerance** — the Android app should show a clear error and not lose the entry when the network drops (retry on reconnect is a stretch goal).
 - **NFR5 Usability** — the sell screen needs at most a cut choice and a weight; a cashier needs only a short walkthrough.
 - **NFR6 Portability** — backend runs on any machine with Node.js and MySQL installed; `.env.example` documents local setup.
@@ -67,3 +67,4 @@
 - Payment handling (cash/card) is recorded as a total only; no payment-gateway integration.
 - Weighing is done on a normal scale and the weight is typed in; no scale-device integration this iteration.
 - Prices are entered **per kilogram**, VAT-inclusive (rate stated in `architecture.md` if shown separately).
+- **FR12 and FR16 were reworded, not dropped.** The original wording described a unified stock-movement ledger table and sale lines grouped under one parent sale record. Neither was built this cycle; equivalent auditability and transactional integrity are achieved instead via dedicated per-action tables (`stock_batches`, `sales`, `wastage`) and atomic per-request transactions, as detailed in `database-design.md`. A true cross-type ledger and sale-header/line grouping remain reasonable future work if a full financial audit trail or itemised receipts become a hard requirement.

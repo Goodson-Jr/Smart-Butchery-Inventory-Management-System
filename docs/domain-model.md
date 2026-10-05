@@ -2,22 +2,22 @@
 
 **Smart Butchery Inventory Management System (SBIMS)**
 
-> Conceptual model — business concepts, attributes and relationships. No methods,
-> no keys, no data types. Add the drawn class diagram (draw.io) before hand-in;
-> the Mermaid version below is the starting point.
+Conceptual model — business concepts, attributes and relationships. This
+reflects the system as actually built (`backend/database/schema.sql`); an
+earlier draft described a `Sale`/`SaleLine`/`StockMovement` shape that was
+not implemented — see `database-design.md` for why, and
+`high-level-requirements.md` (FR12, FR16) for the reworded requirements.
 
 ## Concepts
 
 | Concept | Meaning |
 |---|---|
-| **User** | A person who can log in — a cashier/attendant (Android) or a manager/admin (web). |
-| **MeatType** | A kind of meat: Beef, Chicken, Pork, Goat. |
-| **Cut** | A specific product under a meat type (Beef → Ribs, Steak, Mince), priced **per kilogram**, with a low-stock threshold and a current available weight. |
-| **Delivery** | A recorded stock-in event: a weight of a cut received on a date, optionally with a cost per kg. |
-| **Sale** | A completed counter transaction: one or more sale lines, a cashier, a date/time, totals. |
-| **SaleLine** | One cut on a sale: the weight sold and the amount, with the cut name and price per kg captured at sale time. |
-| **WastageRecord** | A recorded loss of a weight of a cut for a reason (spoilage, expiry, trim, other). |
-| **StockMovement** | A ledger entry for every change to a cut's available weight — delivery, sale, wastage or manual adjustment — with the weight, time and user. |
+| **User** | A person who can log in — a cashier/attendant (Android) or an admin/manager (web + Android). Deactivated rather than deleted, so history stays attached to a real person. |
+| **Category** | A kind of meat: Beef, Chicken, Pork, ... |
+| **Product** | A specific cut under a category (Beef → Ribs, Steak, Mince), priced **per kilogram**, with an optional cost per kg, a low-stock threshold, an optional barcode, and a current available weight. Retired (soft-deleted) rather than deleted. |
+| **StockBatch** | A recorded delivery: a weight of a product received, by whom, when. Increases available weight. |
+| **Sale** | One product sold at one moment: a weight, the price per kg at that moment, and the resulting amount, by whom. A multi-item checkout produces several `Sale` rows written in one transaction (all succeed or none do) rather than one parent "sale" grouping several lines — see `database-design.md`, Design Decision 3. |
+| **WastageReport** | A reported loss of a weight of a product for a reason (spoilage, expiry, trim, other), with a lifecycle: **PENDING** (reported, stock unchanged) → **APPROVED** (a manager confirmed it; stock is deducted at approval time, re-checked against what's actually left) or **REJECTED** (stock stays unchanged). A manager's own report is approved immediately. |
 
 ## Relationships (Mermaid)
 
@@ -25,67 +25,70 @@
 classDiagram
     class User {
         username
-        fullName
         role
-        active
+        isActive
     }
-    class MeatType {
+    class Category {
         name
     }
-    class Cut {
+    class Product {
         name
         pricePerKg
-        lowStockThresholdKg
-        availableKg
-        active
-    }
-    class Delivery {
-        weightKg
         costPerKg
+        lowStockThresholdKg
+        barcode
+        stockKg
+        isActive
+    }
+    class StockBatch {
+        weightKg
         receivedAt
     }
     class Sale {
-        soldAt
-        totalKg
-        totalAmount
-    }
-    class SaleLine {
-        cutName
-        pricePerKg
         weightKg
-        lineAmount
+        unitPrice
+        totalPrice
+        soldAt
     }
-    class WastageRecord {
+    class WastageReport {
         weightKg
         reason
-        recordedAt
         note
-    }
-    class StockMovement {
-        type
-        weightKg
-        occurredAt
+        status
+        recordedAt
+        reviewedAt
+        rejectionReason
     }
 
-    MeatType "1" --> "*" Cut : groups
-    Cut "1" --> "*" Delivery : received as
-    Cut "1" --> "*" SaleLine : sold as
-    Cut "1" --> "*" WastageRecord : lost as
-    Cut "1" --> "*" StockMovement : tracked by
-    Sale "1" *-- "1..*" SaleLine : contains
-    User "1" --> "*" Sale : records
-    User "1" --> "*" Delivery : records
-    User "1" --> "*" WastageRecord : records
-    User "1" --> "*" StockMovement : causes
+    Category "1" --> "*" Product : groups
+    Product "1" --> "*" StockBatch : received as
+    Product "1" --> "*" Sale : sold as
+    Product "1" --> "*" WastageReport : lost as
+    User "1" --> "*" StockBatch : records
+    User "1" --> "*" Sale : makes
+    User "1" --> "*" WastageReport : reports
+    User "1" --> "*" WastageReport : reviews
 ```
 
 ## Notes for the design
 
-- **`Cut.availableKg`** is a stored running total, adjusted transactionally on
-  every delivery / sale line / wastage / adjustment. `StockMovement` is the audit
-  trail and lets the true balance be re-derived if needed.
-- `SaleLine` stores `cutName` and `pricePerKg` as a **snapshot** so a past receipt
-  or report stays correct after a price change.
-- Reports (daily/weekly sales, profit, stock usage) are **queries** over `Sale`,
-  `SaleLine`, `Delivery` and `WastageRecord` — not stored entities.
-- Low-stock is a derived condition: `availableKg <= lowStockThresholdKg`.
+- **`Product.stockKg`** is a stored running total, adjusted transactionally
+  on every delivery, sale, and approved wastage report — not recomputed by
+  summing history on every read. See `database-design.md`, Design Decision 1.
+- **`Sale.unitPrice`** is a **snapshot** of the product's price at the
+  moment of sale, so a past receipt or report stays correct after a price
+  change.
+- A **`WastageReport`** only affects `stockKg` at the moment it becomes
+  APPROVED, and that deduction re-checks current stock rather than trusting
+  the stock level at the time it was reported — stock may have sold in the
+  meantime. Approving an already-APPROVED or REJECTED report, or approving
+  when there's no longer enough stock left, is refused.
+- Reports (daily/weekly sales, profit, stock usage) are **queries** over
+  `Sale`, `StockBatch`, and `WastageReport` — not stored entities of their
+  own.
+- Low-stock is a derived condition: `stockKg <= lowStockThresholdKg`.
+- There is no separate `StockMovement` ledger concept — `StockBatch`,
+  `Sale`, and `WastageReport` together already record every stock change
+  with its weight, timestamp, and responsible user; a full movement history
+  means querying the three of them rather than one unified table. See the
+  reworded FR12 in `high-level-requirements.md`.
