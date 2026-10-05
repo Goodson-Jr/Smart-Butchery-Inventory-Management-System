@@ -54,9 +54,18 @@ CREATE TABLE wastage (
   id INT AUTO_INCREMENT PRIMARY KEY,
   product_id INT NOT NULL,
   quantity_kg DECIMAL(10, 3) NOT NULL,
-  reason VARCHAR(255),
+  reason ENUM('SPOILAGE', 'EXPIRY', 'TRIM', 'OTHER') NOT NULL DEFAULT 'OTHER',
+  note VARCHAR(255),
+  -- Cashier reports stay PENDING (no stock change) until a manager approves
+  -- them, so meat can't be written off as "spoilt" without a second pair of
+  -- eyes (#39). Stock is only deducted on approval.
+  status ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
   recorded_by INT NOT NULL,
   recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  reviewed_by INT NULL,
+  reviewed_at TIMESTAMP NULL,
+  rejection_reason VARCHAR(255) NULL,
   FOREIGN KEY (product_id) REFERENCES products(id),
-  FOREIGN KEY (recorded_by) REFERENCES users(id)
+  FOREIGN KEY (recorded_by) REFERENCES users(id),
+  FOREIGN KEY (reviewed_by) REFERENCES users(id)
 );

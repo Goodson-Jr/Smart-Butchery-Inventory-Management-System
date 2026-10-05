@@ -41,5 +41,20 @@ async function checkLowStock() {
     }
 }
 
+async function checkPendingWastage() {
+    if (Session.getRole() !== 'admin') return;
+    try {
+        const pending = await Api.getWastage('PENDING');
+        if (!pending.length) return;
+        const note = document.getElementById('pendingWastageNote');
+        note.textContent = (pending.length === 1 ? '1 wastage report is' : `${pending.length} wastage reports are`) +
+            ' waiting for your approval ›';
+        note.hidden = false;
+    } catch (err) {
+        // silent -- background check
+    }
+}
+
 loadSummary();
 checkLowStock();
+checkPendingWastage();

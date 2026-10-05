@@ -10,6 +10,7 @@ import com.sbims.pos.model.SaleRequest;
 import com.sbims.pos.model.SaleResponse;
 import com.sbims.pos.model.StockBatchRequest;
 import com.sbims.pos.model.WastageRequest;
+import com.sbims.pos.model.WastageResponse;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -42,7 +43,7 @@ public interface ApiService {
     Call<DailySummary> getTodaySummary();
 
     @POST("api/wastage")
-    Call<Void> recordWastage(@Body WastageRequest request);
+    Call<WastageResponse> recordWastage(@Body WastageRequest request);
 
     @GET("api/alerts/low-stock")
     Call<List<Product>> getLowStockAlerts();
