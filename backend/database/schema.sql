@@ -6,6 +6,9 @@ CREATE TABLE users (
   username VARCHAR(50) NOT NULL UNIQUE,
   password_hash VARCHAR(255) NOT NULL,
   role ENUM('admin', 'cashier') NOT NULL,
+  -- Deactivated instead of deleted, so their sales/stock/wastage history
+  -- keeps pointing at a real user (#40).
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -55,6 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.isSuccessful() && response.body() != null) {
                                 sessionManager.saveSession(response.body().token, response.body().role, username);
                                 goToDashboard();
+                            } else if (response.code() == 403) {
+                                showError(errorText, "This account has been deactivated. Ask a manager to reactivate it.");
                             } else {
                                 showError(errorText, "Invalid username or password");
                             }
