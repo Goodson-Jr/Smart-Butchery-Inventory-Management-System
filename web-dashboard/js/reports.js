@@ -7,13 +7,20 @@ if (Session.getRole() !== 'admin') {
 }
 
 function todayStr() {
-    return new Date().toISOString().slice(0, 10);
+    return daysAgoStr(0);
 }
 function daysAgoStr(n) {
-    return new Date(Date.now() - n * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    // Local calendar date, not UTC -- toISOString() would still say
+    // yesterday between midnight and 2am in Zambia (#45).
+    const d = new Date();
+    d.setDate(d.getDate() - n);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 function shortDate(isoDate) {
-    return new Date(isoDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    // "2026-10-05" as a local date -- new Date("2026-10-05") would be UTC
+    // midnight and can land on the previous day (#45).
+    const [y, m, d] = String(isoDate).slice(0, 10).split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
 document.getElementById('fromDate').value = daysAgoStr(6);
