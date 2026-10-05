@@ -67,6 +67,12 @@ public class DashboardActivity extends AppCompatActivity {
         viewStockButton.setOnClickListener(v -> startActivity(new Intent(this, StockListActivity.class)));
         wastageButton.setOnClickListener(v -> startActivity(new Intent(this, WastageActivity.class)));
         logoutButton.setOnClickListener(v -> logout());
+
+        // stock-batches is admin-only on the backend -- hide the entry point
+        // for cashiers instead of letting them hit a raw 403 (#34).
+        if (!"admin".equals(new SessionManager(this).getRole())) {
+            addStockButton.setVisibility(View.GONE);
+        }
     }
 
     private void logout() {

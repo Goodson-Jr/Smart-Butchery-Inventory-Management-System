@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reports · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+    <style>
+        table.report-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.report-table th, table.report-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+        table.report-table th { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+        table.report-table td.num, table.report-table th.num { text-align: right; }
+        table.report-table tfoot td { font-weight: 700; border-top: 2px solid var(--line); border-bottom: 0; }
+        .report-section { margin-bottom: 26px; }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Reports</h1>
+            <p>Sales trends, profit estimation, and stock usage</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 22px; display:flex; gap:14px; align-items:end; flex-wrap:wrap;">
+            <div class="field" style="margin-bottom:0;">
+                <label for="fromDate">From</label>
+                <input id="fromDate" type="date">
+            </div>
+            <div class="field" style="margin-bottom:0;">
+                <label for="toDate">To</label>
+                <input id="toDate" type="date">
+            </div>
+            <button type="button" class="btn dark auto" id="applyRangeButton">Apply</button>
+        </div>
+
+        <div class="report-section">
+            <h3>Daily sales</h3>
+            <div class="card">
+                <table class="report-table">
+                    <thead><tr><th>Date</th><th class="num">Kg sold</th><th class="num">Revenue</th></tr></thead>
+                    <tbody id="salesRows"></tbody>
+                    <tfoot><tr><td>Total</td><td class="num" id="salesTotalKg"></td><td class="num" id="salesTotalRevenue"></td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>Estimated profit</h3>
+            <div id="profitNote" class="note err" hidden></div>
+            <div class="card">
+                <table class="report-table">
+                    <thead><tr><th>Date</th><th class="num">Revenue</th><th class="num">Est. cost</th><th class="num">Est. profit</th></tr></thead>
+                    <tbody id="profitRows"></tbody>
+                    <tfoot><tr><td>Total</td><td class="num" id="profitTotalRevenue"></td><td class="num" id="profitTotalCost"></td><td class="num" id="profitTotalProfit"></td></tr></tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <h3>Stock usage by cut</h3>
+            <div class="card">
+                <table class="report-table">
+                    <thead><tr><th>Cut</th><th class="num">Received</th><th class="num">Sold</th><th class="num">Wasted</th></tr></thead>
+                    <tbody id="usageRows"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

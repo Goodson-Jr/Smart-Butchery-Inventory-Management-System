@@ -1,6 +1,12 @@
 requireAuth();
 renderShell('dashboard');
 
+// stock-batches is admin-only on the backend -- hide the entry point for
+// cashiers instead of letting them hit a raw 403 (#34).
+if (Session.getRole() !== 'admin') {
+    document.getElementById('addStockRow').style.display = 'none';
+}
+
 async function loadSummary() {
     try {
         const summary = await Api.getTodaySummary();

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Products · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+    <style>
+        .product-table-row {
+            display: grid;
+            grid-template-columns: 40px 1.4fr 1fr 1fr 1fr 0.8fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 13px;
+        }
+        .product-table-row:last-child { border-bottom: 0; }
+        .product-table-head { font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; }
+        .inactive-row { opacity: .55; }
+        .edit-form { display: none; background: var(--yellow-soft); border-radius: var(--radius-sm); padding: 14px; margin-top: 8px; }
+        .edit-form.open { display: block; }
+        .edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Manage Products</h1>
+            <p>Add new cuts, adjust pricing, or take a product off sale</p>
+        </div>
+
+        <div id="formNote" class="note err" hidden></div>
+
+        <div class="card" style="margin-bottom: 22px;">
+            <h3 style="margin-top:0;">Add a new product</h3>
+            <div class="field">
+                <label for="newName">Name</label>
+                <input id="newName" type="text" placeholder="e.g. Beef Sausage">
+            </div>
+            <div class="edit-grid" style="margin-bottom: 14px;">
+                <div class="field" style="margin-bottom:0;">
+                    <label for="newCategory">Category</label>
+                    <select id="newCategory"></select>
+                </div>
+                <div class="field" style="margin-bottom:0;">
+                    <label for="newBarcode">Barcode (optional)</label>
+                    <input id="newBarcode" type="text" placeholder="e.g. 2000000000020">
+                </div>
+                <div class="field" style="margin-bottom:0;">
+                    <label for="newPrice">Sell price (K/kg)</label>
+                    <input id="newPrice" type="number" step="0.01" min="0">
+                </div>
+                <div class="field" style="margin-bottom:0;">
+                    <label for="newCost">Cost price (K/kg, optional)</label>
+                    <input id="newCost" type="number" step="0.01" min="0">
+                </div>
+                <div class="field" style="margin-bottom:0;">
+                    <label for="newThreshold">Low-stock threshold (kg)</label>
+                    <input id="newThreshold" type="number" step="0.1" min="0" value="5">
+                </div>
+            </div>
+            <button type="button" class="btn dark" id="addProductButton">Add Product</button>
+        </div>
+
+        <div class="card" style="margin-bottom: 22px;">
+            <h3 style="margin-top:0;">Add a new category</h3>
+            <div style="display:flex; gap: 10px;">
+                <input id="newCategoryName" type="text" placeholder="e.g. Goat" style="flex:1; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm);">
+                <button type="button" class="btn soft auto" id="addCategoryButton">Add</button>
+            </div>
+        </div>
+
+        <h3>All products</h3>
+        <div class="card">
+            <div class="product-table-row product-table-head">
+                <span></span><span>Name</span><span>Price</span><span>Cost</span><span>Stock</span><span>Status</span><span></span>
+            </div>
+            <div id="productList"></div>
+        </div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/products.js"></script>
+</body>
+</html>

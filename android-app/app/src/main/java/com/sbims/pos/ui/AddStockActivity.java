@@ -14,6 +14,7 @@ import com.sbims.pos.R;
 import com.sbims.pos.model.Product;
 import com.sbims.pos.model.StockBatchRequest;
 import com.sbims.pos.network.ApiClient;
+import com.sbims.pos.network.SessionManager;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -38,6 +39,12 @@ public class AddStockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock);
+
+        if (!"admin".equals(new SessionManager(this).getRole())) {
+            Toast.makeText(this, "Only admin accounts can add stock", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         productRecyclerView = findViewById(R.id.productRecyclerView);
         quantityInput = findViewById(R.id.quantityInput);
