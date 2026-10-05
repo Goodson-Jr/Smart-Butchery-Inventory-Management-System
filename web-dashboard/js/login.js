@@ -1,3 +1,5 @@
+document.getElementById('appVersion').textContent = 'Version ' + APP_VERSION;
+
 if (Session.isLoggedIn()) window.location.href = 'dashboard.html';
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
