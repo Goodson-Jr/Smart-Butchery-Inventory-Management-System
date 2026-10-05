@@ -8,7 +8,7 @@ function renderShell(activePage) {
         { id: 'wastage', href: 'wastage.html', label: 'Report Wastage' },
         { id: 'wastage-review', href: 'wastage-review.html', label: 'Wastage Approvals', adminOnly: true },
         { id: 'products', href: 'products.html', label: 'Manage Products', adminOnly: true },
-        { id: 'reports', href: 'reports.html', label: 'Reports' },
+        { id: 'reports', href: 'reports.html', label: 'Reports', adminOnly: true },
         { id: 'users', href: 'users.html', label: 'Manage Users', adminOnly: true },
     ];
 

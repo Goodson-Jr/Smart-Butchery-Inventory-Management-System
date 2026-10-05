@@ -1,6 +1,6 @@
 const express = require('express');
 const pool = require('../config/db');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -10,8 +10,11 @@ function resolveDateRange(req) {
   return { from, to };
 }
 
+// All reports are manager-only (FR5, #41). Cashiers get their own day's
+// total from /sales/today instead.
+
 // Daily sales breakdown -- kg sold and revenue per day.
-router.get('/reports/sales', requireAuth, async (req, res) => {
+router.get('/reports/sales', requireAuth, requireRole('admin'), async (req, res) => {
   const { from, to } = resolveDateRange(req);
   const [rows] = await pool.query(
     `SELECT DATE(sold_at) AS date, SUM(quantity_kg) AS kg_sold, SUM(total_price) AS revenue
@@ -27,7 +30,7 @@ router.get('/reports/sales', requireAuth, async (req, res) => {
 // Estimated profit per day -- revenue minus cost, using products.cost_per_kg.
 // Products with no cost_per_kg set contribute 0 cost for their lines, so the
 // estimate is a floor, not exact -- missing_cost_products flags this.
-router.get('/reports/profit', requireAuth, async (req, res) => {
+router.get('/reports/profit', requireAuth, requireRole('admin'), async (req, res) => {
   const { from, to } = resolveDateRange(req);
 
   const [rows] = await pool.query(
@@ -51,7 +54,7 @@ router.get('/reports/profit', requireAuth, async (req, res) => {
 
 // Stock usage per product within the date range: received (deliveries),
 // sold, and wasted, so management can see where stock is actually going.
-router.get('/reports/stock-usage', requireAuth, async (req, res) => {
+router.get('/reports/stock-usage', requireAuth, requireRole('admin'), async (req, res) => {
   const { from, to } = resolveDateRange(req);
 
   const [rows] = await pool.query(
