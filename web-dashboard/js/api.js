@@ -2,6 +2,10 @@
 // Talks to the same backend as the Android app -- Goodson's live Railway
 // deployment by default. Swap to the local URL below when developing
 // against a backend running on your own machine instead.
+// Bump this with each release. Keep it in step with versionName in
+// android-app/app/build.gradle.
+const APP_VERSION = '1.0';
+
 const API_BASE = 'https://smart-butchery-inventory-management-system-production.up.railway.app/api';
 // const API_BASE = 'http://localhost:3000/api';
 
