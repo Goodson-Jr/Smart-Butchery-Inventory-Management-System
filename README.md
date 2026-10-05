@@ -30,3 +30,5 @@ https://smart-butchery-inventory-management-system-production.up.railway.app
 ```
 
 Seeded accounts for testing: `admin`/`admin123`, `cashier`/`cashier123` (change these before any real submission/demo where security matters).
+
+<!-- Testing Railway auto-deploy after GitHub App re-auth -->
