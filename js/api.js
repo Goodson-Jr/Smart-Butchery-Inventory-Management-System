@@ -54,11 +54,31 @@ const Api = {
     getTodaySummary: () => apiFetch('/sales/today'),
     recordSale: (product_id, quantity_kg) => apiFetch('/sales', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
     addStock: (product_id, quantity_kg) => apiFetch('/stock-batches', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
-    recordWastage: (product_id, quantity_kg, reason) => apiFetch('/wastage', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg, reason }) }),
+    recordWastage: (product_id, quantity_kg, reason, note) => apiFetch('/wastage', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg, reason, note }) }),
+    getUsers: () => apiFetch('/users'),
+    createUser: (username, password, role) => apiFetch('/users', { method: 'POST', body: JSON.stringify({ username, password, role }) }),
+    updateUser: (id, changes) => apiFetch(`/users/${id}`, { method: 'PUT', body: JSON.stringify(changes) }),
+    resetPassword: (id, password) => apiFetch(`/users/${id}/password`, { method: 'POST', body: JSON.stringify({ password }) }),
+    getWastage: (status) => apiFetch('/wastage' + (status ? '?status=' + status : '')),
+    approveWastage: (id) => apiFetch(`/wastage/${id}/approve`, { method: 'POST' }),
+    rejectWastage: (id, rejection_reason) => apiFetch(`/wastage/${id}/reject`, { method: 'POST', body: JSON.stringify({ rejection_reason }) }),
 };
 
 function requireAuth() {
     if (!Session.isLoggedIn()) window.location.href = 'login.html';
+}
+
+// For anything a user typed (notes, usernames) before it goes into innerHTML.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+}
+
+const WASTAGE_REASONS = { SPOILAGE: 'Spoilage', EXPIRY: 'Expired', TRIM: 'Trim / offcuts', OTHER: 'Other' };
+
+function fmtDateTime(value) {
+    return value ? new Date(value).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : '';
 }
 
 function fmt(n, decimals = 2) {

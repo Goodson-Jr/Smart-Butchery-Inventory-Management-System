@@ -3,14 +3,20 @@ function renderShell(activePage) {
     const links = [
         { id: 'dashboard', href: 'dashboard.html', label: 'Dashboard' },
         { id: 'sale', href: 'sale.html', label: 'Record Sale' },
-        { id: 'add-stock', href: 'add-stock.html', label: 'Add Stock' },
+        { id: 'add-stock', href: 'add-stock.html', label: 'Add Stock', adminOnly: true },
         { id: 'stock', href: 'stock.html', label: 'Available Stock' },
-        { id: 'wastage', href: 'wastage.html', label: 'Record Wastage' },
+        { id: 'wastage', href: 'wastage.html', label: 'Report Wastage' },
+        { id: 'wastage-review', href: 'wastage-review.html', label: 'Wastage Approvals', adminOnly: true },
+        { id: 'products', href: 'products.html', label: 'Manage Products', adminOnly: true },
+        { id: 'reports', href: 'reports.html', label: 'Reports', adminOnly: true },
+        { id: 'users', href: 'users.html', label: 'Manage Users', adminOnly: true },
     ];
 
-    const navHtml = links.map((link) =>
-        `<a href="${link.href}" class="${link.id === activePage ? 'is-active' : ''}">${link.label}</a>`
-    ).join('');
+    const isAdmin = Session.getRole() === 'admin';
+    const navHtml = links
+        .filter((link) => !link.adminOnly || isAdmin)
+        .map((link) => `<a href="${link.href}" class="${link.id === activePage ? 'is-active' : ''}">${link.label}</a>`)
+        .join('');
 
     document.getElementById('sidebar').innerHTML = `
         <div class="side-brand">

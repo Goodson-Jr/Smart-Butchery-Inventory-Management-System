@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wastage Approvals · Smart Butchery IMS</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main">
+        <div class="page-head">
+            <h1>Wastage Approvals</h1>
+            <p>Check the meat before approving. Stock only comes off once you approve a report.</p>
+        </div>
+
+        <div id="pageNote" class="note" hidden></div>
+
+        <h3>Waiting for you <span id="pendingCount" class="count-badge" hidden></span></h3>
+        <div class="card" id="pendingList" style="margin-bottom: 22px;"><p class="muted">Loading…</p></div>
+
+        <h3>Recent decisions</h3>
+        <div class="card" id="historyList"><p class="muted">Loading…</p></div>
+    </main>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/shell.js"></script>
+<script src="js/wastage-review.js"></script>
+</body>
+</html>

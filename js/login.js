@@ -16,7 +16,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         Session.save(result.token, result.role, username);
         window.location.href = 'dashboard.html';
     } catch (err) {
-        errorNote.textContent = err.status === 401 ? 'Invalid username or password' : ('Could not reach server: ' + err.message);
+        if (err.status === 401) errorNote.textContent = 'Invalid username or password';
+        else if (err.status === 403) errorNote.textContent = err.message;
+        else errorNote.textContent = 'Could not reach server: ' + err.message;
         errorNote.hidden = false;
     } finally {
         loginButton.disabled = false;
