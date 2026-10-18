@@ -49,10 +49,15 @@ async function apiFetch(path, options = {}) {
 const Api = {
     login: (username, password) => apiFetch('/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
     getProducts: () => apiFetch('/products'),
+    getAllProducts: () => apiFetch('/products?all=true'),
+    createProduct: (product) => apiFetch('/products', { method: 'POST', body: JSON.stringify(product) }),
+    updateProduct: (id, changes) => apiFetch(`/products/${id}`, { method: 'PUT', body: JSON.stringify(changes) }),
     getCategories: () => apiFetch('/categories'),
+    createCategory: (name) => apiFetch('/categories', { method: 'POST', body: JSON.stringify({ name }) }),
     getLowStock: () => apiFetch('/alerts/low-stock'),
     getTodaySummary: () => apiFetch('/sales/today'),
     recordSale: (product_id, quantity_kg) => apiFetch('/sales', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
+    // Whole cart in one atomic request: every line is saved, or none are.
     checkout: (items) => apiFetch('/sales/batch', { method: 'POST', body: JSON.stringify({ items }) }),
     addStock: (product_id, quantity_kg) => apiFetch('/stock-batches', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
     recordWastage: (product_id, quantity_kg, reason, note) => apiFetch('/wastage', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg, reason, note }) }),
@@ -63,7 +68,15 @@ const Api = {
     getWastage: (status) => apiFetch('/wastage' + (status ? '?status=' + status : '')),
     approveWastage: (id) => apiFetch(`/wastage/${id}/approve`, { method: 'POST' }),
     rejectWastage: (id, rejection_reason) => apiFetch(`/wastage/${id}/reject`, { method: 'POST', body: JSON.stringify({ rejection_reason }) }),
+    // Empty from/to fall back to the server's default range (last 7 days).
+    getSalesReport: (from, to) => apiFetch('/reports/sales' + dateRange(from, to)),
+    getProfitReport: (from, to) => apiFetch('/reports/profit' + dateRange(from, to)),
+    getStockUsageReport: (from, to) => apiFetch('/reports/stock-usage' + dateRange(from, to)),
 };
+
+function dateRange(from, to) {
+    return '?' + new URLSearchParams({ from: from || '', to: to || '' }).toString();
+}
 
 function requireAuth() {
     if (!Session.isLoggedIn()) window.location.href = 'login.html';
