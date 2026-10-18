@@ -53,6 +53,7 @@ const Api = {
     getLowStock: () => apiFetch('/alerts/low-stock'),
     getTodaySummary: () => apiFetch('/sales/today'),
     recordSale: (product_id, quantity_kg) => apiFetch('/sales', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
+    checkout: (items) => apiFetch('/sales/batch', { method: 'POST', body: JSON.stringify({ items }) }),
     addStock: (product_id, quantity_kg) => apiFetch('/stock-batches', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg }) }),
     recordWastage: (product_id, quantity_kg, reason, note) => apiFetch('/wastage', { method: 'POST', body: JSON.stringify({ product_id, quantity_kg, reason, note }) }),
     getUsers: () => apiFetch('/users'),
